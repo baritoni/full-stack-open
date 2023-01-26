@@ -1,0 +1,9 @@
+sequenceDiagram
+browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+
+Palvelin vastaa selaimen POST-metodiin koodilla 302, joka saa selaimen lataamaan sivun uudestaan
+server->>browser: Status Code 302
+
+Selain lataa sivun uudestaan
+browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
+
