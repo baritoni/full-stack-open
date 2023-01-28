@@ -33,6 +33,6 @@ sequenceDiagram
     browser->>server: https://studies.cs.helsinki.fi/favicon.ico
     activate server
     server-->>browser: HTML document
-    deactivate server
+    deactivate server 
     
     Datan saapuessa selain suorittaa tapahtumankäsittelijän, joka renderöi muistiinpanot ruudulle DOM-apia hyödyntäen
