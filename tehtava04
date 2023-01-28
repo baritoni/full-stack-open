@@ -5,42 +5,43 @@ participant browser
 participant server
 
 Selain lähettää palvelimelle uuden note -tiedoston sisältämän datan
-browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+browser-->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
 activate server
-Palvelin vastaa selaimen POST-metodiin koodilla 302, joka saa selaimen lataamaan sivun uudestaan
+Palvelin vastaa selaimen POST-metodiin uudelleenohjauspyynnöllä, joka kehoittaa selainta lataamaan sivun uudestaan
+server->>browser: Code 302
 deactivate server
 
 Palvelimen JavaScript koodi saa aikaiseksi uuden noten lisäämisen kun sivu ladataan uudestaan
 
 Selain lataa sivun uudestaan
-browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
+browser-->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
 activate server
 server->>browser: HTML document
 deactivate server
 
 Selain lataa tyylitiedoston
-browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+browser-->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
 activate server
 server->>browser: the css file
 deactivate server
 
 Selain lataa javascript -koodin
-browser->>: GET https://studies.cs.helsinki.fi/exampleapp/main.js
+browser-->>: GET https://studies.cs.helsinki.fi/exampleapp/main.js
 activate server
 server->>browser: the JavaScript file
 deactivate server
 
 Selain lataa json -raakadatan
-browser->>: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+browser-->>: GET https://studies.cs.helsinki.fi/exampleapp/data.json
 activate server
 Sivun ensimmäinen note on tyhjä rivi
 server->>browser: [{ "content":"","date":"2023-01-27T20:38:32.642Z" }, ... ]
 deactivate server
 
 Selain hakee palvelimelta ikonin
-browser->>server: https://studies.cs.helsinki.fi/favicon.ico
+browser-->>server: https://studies.cs.helsinki.fi/favicon.ico
 activate server
-server-->>browser: HTML document
+server->>browser: HTML document
 deactivate server
 
 Datan saapuessa selain suorittaa tapahtumankäsittelijän, joka renderöi muistiinpanot ruudulle DOM-apia hyödyntäen
