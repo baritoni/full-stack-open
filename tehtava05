@@ -26,7 +26,13 @@ sequenceDiagram
     Selain hakee palvelimelta JSON -muotoisen -raakadatan
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa.js
     activate server
-    server-->>browser: [{"content":"nonniiiiii","date":"2023-01-27T21:35:55.387Z"}...]
+    server-->>browser: [{"content":"nonniiiiii","date":"2023-01-27T21:35:55.387Z"}, ...]
     deactivate server
     
-    Selain renderöid siv
+    Selain hakee palvelimelta ikonin
+    browser->>server: https://studies.cs.helsinki.fi/favicon.ico
+    activate server
+    server-->>browser: HTML document
+    deactivate server
+    
+    Datan saapuessa selain suorittaa tapahtumankäsittelijän, joka renderöi muistiinpanot ruudulle DOM-apia hyödyntäen
