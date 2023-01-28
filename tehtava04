@@ -18,21 +18,23 @@ activate server
 server->>browser: HTML document
 deactivate server
 
-Selain lataa  tyylitiedoston uudestaan
+Selain lataa  tyylitiedoston
 browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
 activate server
 server->>browser: the css file
 deactivate server
 
-Selain lataa javascript -koodin uudestaan
+Selain lataa javascript -koodin
 browser->>: GET https://studies.cs.helsinki.fi/exampleapp/main.js
 activate server
 server->>browser: the JavaScript file
 deactivate server
 
-Selain lataa json -raakadatan uudestaan
+Selain lataa json -raakadatan
 browser->>: GET https://studies.cs.helsinki.fi/exampleapp/data.json
 activate server
 server->>browser: [{ "content":"","date":"2023-01-27T20:38:32.642Z" }, ... ]
 deactivate server
+
+Datan saapuessa selain suorittaa tapahtumankäsittelijän, joka renderöi muistiinpanot ruudulle DOM-apia hyödyntäen
 
