@@ -13,7 +13,7 @@ sequenceDiagram
     
     Selain hakee palvelimelta tyyli tiedoston
     browser-->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
-     activate server
+    activate server
     server->>browser: the css file
     deactivate server
     
