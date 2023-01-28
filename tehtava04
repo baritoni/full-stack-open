@@ -1,8 +1,8 @@
+Kaavio, joka kuvaa mitä tapahtuu tilanteessa, missä käyttäjä luo uuden muistiinpanon ollessaan sivulla https://studies.cs.helsinki.fi/exampleapp/notes
+
 sequenceDiagram
 participant browser
 participant server
-
-Uuden noten lisäämisen aiheuttamat tapahtumat
 
 Selain lähettää palvelimelle uuden note -tiedoston sisältämän datan
 browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
