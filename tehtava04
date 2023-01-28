@@ -1,9 +1,38 @@
 sequenceDiagram
-browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+participant browser
+participant server
 
+Uuden noten lisäämisen aiheuttamat tapahtumat
+
+Selain lähettää palvelimelle uuden note -tiedoston sisältämän datan
+browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
+activate server
 Palvelin vastaa selaimen POST-metodiin koodilla 302, joka saa selaimen lataamaan sivun uudestaan
-server->>browser: Status Code 302
+deactivate server
+
+Palvelimen JavaScript koodi saa aikaiseksi uuden noten lisäämisen kun sivu ladataan uudestaan
 
 Selain lataa sivun uudestaan
 browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
+activate server
+server->>browser: HTML document
+deactivate server
+
+Selain lataa  tyylitiedoston uudestaan
+browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+activate server
+server->>browser: the css file
+deactivate server
+
+Selain lataa javascript -koodin uudestaan
+browser->>: GET https://studies.cs.helsinki.fi/exampleapp/main.js
+activate server
+server->>browser: the JavaScript file
+deactivate server
+
+Selain lataa json -raakadatan uudestaan
+browser->>: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+activate server
+server->>browser: [{ "content":"","date":"2023-01-27T20:38:32.642Z" }, ... ]
+deactivate server
 
