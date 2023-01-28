@@ -33,7 +33,14 @@ deactivate server
 Selain lataa json -raakadatan
 browser->>: GET https://studies.cs.helsinki.fi/exampleapp/data.json
 activate server
+Sivun ensimmäinen note on tyhjä rivi
 server->>browser: [{ "content":"","date":"2023-01-27T20:38:32.642Z" }, ... ]
+deactivate server
+
+Selain hakee palvelimelta ikonin
+browser->>server: https://studies.cs.helsinki.fi/favicon.ico
+activate server
+server-->>browser: HTML document
 deactivate server
 
 Datan saapuessa selain suorittaa tapahtumankäsittelijän, joka renderöi muistiinpanot ruudulle DOM-apia hyödyntäen
