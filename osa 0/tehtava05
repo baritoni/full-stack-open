@@ -1,0 +1,44 @@
+Kaavio tilanteesta, jossa käyttäjä menee selaimella osoitteeseen https://studies.cs.helsinki.fi/exampleapp/spa
+
+sequenceDiagram
+    participant browser
+    participant server
+    
+    Selain hakee palvelimelta sivun
+    browser-->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa
+    activate server
+    Palvelin palauttaa selaimelle html dokumentin
+    server->>browser: HTML document
+    deactivate server
+    
+    Selain hakee palvelimelta tyyli tiedoston
+    browser-->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    activate server
+    server->>browser: the css file
+    deactivate server
+    
+    Selain hakee palvelimelta JavaScript tiedoston
+    browser-->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+    activate server
+    server->>browser: the JavaScript file
+    deactivate server
+    
+    Selain hakee palvelimelta installHook.js -tiedoston
+    browser-->>server: GET chrome-extension://fmkadmapgofadopljbjfkapdkoienihi/build/installHook.js
+    activate server
+    server->>browser: the installHook JavaScript file
+    deactivate server
+    
+    Selain hakee palvelimelta JSON -muotoisen -raakadatan
+    browser-->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+    activate server
+    server->>browser: [{"content":"nonniiiiii","date":"2023-01-27T21:35:55.387Z"}, ...]
+    deactivate server
+    
+    Selain hakee palvelimelta ikonin
+    browser-->>server: https://studies.cs.helsinki.fi/favicon.ico
+    activate server
+    server->>browser: HTML document
+    deactivate server 
+    
+    Datan saapuessa selain suorittaa tapahtumankäsittelijän, joka renderöi muistiinpanot ruudulle DOM-apia hyödyntäen
