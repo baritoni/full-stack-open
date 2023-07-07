@@ -1,9 +1,13 @@
 const Person = ({ persons, handleClick }) => {
+  const personName = persons.name;
+
   return (
     <div>
-      <p key="persons.name">
+      <p key="persons.id">
         {persons.name} {persons.number}{' '}
-        <button onClick={() => handleClick(persons, persons.id)}>delete</button>
+        <button onClick={() => handleClick(persons.id, personName)}>
+          delete
+        </button>
       </p>
     </div>
   );

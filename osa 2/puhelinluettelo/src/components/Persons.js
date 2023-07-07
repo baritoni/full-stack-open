@@ -4,7 +4,7 @@ import Person from './Person';
 kenttään kirjoitetaan tekstiä näytetään filterin mukaiset henkilöt. */
 const Persons = ({ persons, filter, setPersons, deleteById }) => {
   return (
-    <div>
+    <div key="persons.id">
       {filter.query === ''
         ? persons.map((person) => (
             <Person

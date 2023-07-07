@@ -20,8 +20,7 @@ const App = () => {
       setPersons(initialPersons);
     });
   }, []);
-  console.log('Persons: ', persons);
-  console.log('render', persons.length, 'persons');
+  // console.log('render', persons.length, 'persons');
 
   const addPerson = (event) => {
     event.preventDefault();
@@ -30,48 +29,43 @@ const App = () => {
       number: newNumber
     };
 
-    personsService.create(personObject).then((returnedPerson) => {
-      console.log('create method: ', persons);
-      setPersons(persons.concat(returnedPerson));
-      setNewName('');
-    });
-
     const personExisted = persons.find((person) => person.name === newName);
 
     if (personExisted) {
       alert(`${newName} is already added to phonebook`);
+
+      // Uusi nimi luodaan puhelinluetteloon vain siinä tapauksessa, että lisättävä nimi ei ole jo puhelinluettelossa.
     } else {
+      personsService.create(personObject).then((returnedPerson) => {
+        // console.log('create method: ', persons);
+        setPersons(persons.concat(returnedPerson));
+        setNewName('');
+      });
       setPersons(persons.concat(personObject));
       setNewName('');
       setNewNumber('');
     }
   };
 
-  const deleteById = (persons, id) => {
-    /*
+  const deleteById = (id, personName) => {
     if (
       window.confirm(
-        `Do you really want to delete ${persons.name} from phonebook?`
+        `Do you really want to delete ${personName} from phonebook?`
       )
-    )
-    */
-    personsService
-      .deletePerson(id)
-      .then(() => {
-        console.log('response: ', persons);
-        setPersons(persons.filter((p) => p.id !== id));
-      })
-      .catch((error) => {
-        console.log(`Error deleting person by Id ${id}`);
-        console.log('error :', error);
-      });
-
-    /*
-    else {
+    ) {
+      personsService
+        .deletePerson(id)
+        .then(() => {
+          setPersons(persons.filter((p) => p.id !== id));
+        })
+        .catch((error) => {
+          console.log(`Error deleting person by Id ${id}`);
+          console.log('error :', error);
+        });
+    } else {
       console.log('Delete canceled');
-      setPersons(persons.filter((p) => p.id !== id));
+      setPersons(persons);
     }
-    */
   };
 
   const handleNameChange = (event) => {
