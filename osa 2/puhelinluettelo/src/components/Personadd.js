@@ -1,19 +1,26 @@
 // Komponentti sisältää henkilön nimen ja puhelinnumeron lisäykseen tarvittavat inputit.
-const Personadd = (props) => {
+const Personadd = ({
+  addPerson,
+  newName,
+  newNumber,
+  handleNameChange,
+  handleNumberChange
+}) => {
   return (
     <div>
-      <form onSubmit={props.addPerson}>
+      <form onSubmit={addPerson}>
         <div>
-          <b>name:</b>{' '}
-          <input value={props.newName} onChange={props.handleNameChange} />
+          <b>name:</b> <input value={newName} onChange={handleNameChange} />
         </div>
         <div>
           <b>number:</b>{' '}
-          <input value={props.newNumber} onChange={props.handleNumberChange} />
+          <input value={newNumber} onChange={handleNumberChange} />
         </div>
 
         <div>
-          <button type="submit">add</button>
+          <button className="addButton" type="submit">
+            add
+          </button>
         </div>
       </form>
     </div>

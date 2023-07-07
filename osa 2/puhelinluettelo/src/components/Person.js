@@ -3,7 +3,7 @@ const Person = ({ persons, handleClick }) => {
 
   return (
     <div>
-      <p key="persons.id">
+      <p>
         {persons.name} {persons.number}{' '}
         <button onClick={() => handleClick(persons.id, personName)}>
           delete

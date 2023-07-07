@@ -4,11 +4,11 @@ import Person from './Person';
 kenttään kirjoitetaan tekstiä näytetään filterin mukaiset henkilöt. */
 const Persons = ({ persons, filter, setPersons, deleteById }) => {
   return (
-    <div key="persons.id">
+    <div key={persons.id}>
       {filter.query === ''
         ? persons.map((person) => (
             <Person
-              key={person.id}
+              key={person.name}
               persons={person}
               setPersons={setPersons}
               handleClick={deleteById}
@@ -16,7 +16,7 @@ const Persons = ({ persons, filter, setPersons, deleteById }) => {
           ))
         : filter.list.map((person) => (
             <Person
-              key={person.id}
+              key={person.name}
               persons={person}
               setPersons={setPersons}
               handleClick={deleteById}

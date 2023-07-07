@@ -14,6 +14,7 @@ const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
+  const [successMessage, setSuccessMessage] = useState(null);
 
   useEffect(() => {
     personsService.getAll().then((initialPersons) => {
@@ -22,7 +23,7 @@ const App = () => {
   }, []);
   // console.log('render', persons.length, 'persons');
 
-  const addPerson = (event) => {
+  const addPerson = (event, id) => {
     event.preventDefault();
     const personObject = {
       name: newName,
@@ -31,16 +32,45 @@ const App = () => {
 
     const personExisted = persons.find((person) => person.name === newName);
 
-    if (personExisted) {
-      alert(`${newName} is already added to phonebook`);
+    const personUpdate = {
+      ...personExisted,
+      number: newNumber
+    };
 
-      // Uusi nimi luodaan puhelinluetteloon vain siinä tapauksessa, että lisättävä nimi ei ole jo puhelinluettelossa.
-    } else {
+    if (personExisted) {
+      window.confirm(`Do you want to change number of ${personUpdate.name}?`);
+      personsService
+        .update(personUpdate.id, personUpdate)
+        .then((returnedPerson) => {
+          setPersons(
+            persons.map((person) =>
+              person.id !== personUpdate.id ? person : returnedPerson
+            )
+          );
+          setSuccessMessage(`Phonenumber of ${personUpdate.name} updated`);
+          /* Laskuri pitää onnistuneen henkilön poiston jälkeen viestin näkyvissä 5 sekuntia, jonka jälkeen viesti saa
+      arvokseen nullin */
+          setTimeout(() => {
+            setSuccessMessage(null);
+          }, 5000);
+        })
+        .catch((error) => {
+          console.log(`Error updating person ${personUpdate.name}`);
+          console.log('error :', error);
+        });
+    }
+    // Uusi nimi luodaan puhelinluetteloon vain siinä tapauksessa, että lisättävä nimi ei ole jo puhelinluettelossa.
+    else {
       personsService.create(personObject).then((returnedPerson) => {
-        // console.log('create method: ', persons);
         setPersons(persons.concat(returnedPerson));
         setNewName('');
       });
+      setSuccessMessage(`Added ${newName}`);
+      /* Laskuri pitää onnistuneen henkilön lisäyksen jälkeen viestin näkyvissä 5 sekuntia, jonka jälkeen viesti saa
+      arvokseen nullin */
+      setTimeout(() => {
+        setSuccessMessage(null);
+      }, 5000);
       setPersons(persons.concat(personObject));
       setNewName('');
       setNewNumber('');
@@ -57,6 +87,12 @@ const App = () => {
         .deletePerson(id)
         .then(() => {
           setPersons(persons.filter((p) => p.id !== id));
+          setSuccessMessage(`Deleted ${personName}`);
+          /* Laskuri pitää onnistuneen henkilön poiston jälkeen viestin näkyvissä 5 sekuntia, jonka jälkeen viesti saa
+      arvokseen nullin */
+          setTimeout(() => {
+            setSuccessMessage(null);
+          }, 5000);
         })
         .catch((error) => {
           console.log(`Error deleting person by Id ${id}`);
@@ -92,7 +128,7 @@ const App = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      <Notification />
+      <Notification message={successMessage} />
       <Filter filter={filter} handleFilterChange={handleFilterChange} />
       <h2>add a new</h2>
       <Personadd
@@ -104,7 +140,6 @@ const App = () => {
       />
       <h2>Numbers</h2>
       <Persons
-        key={persons.id}
         persons={persons}
         filter={filter}
         setPersons={setPersons}
