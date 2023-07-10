@@ -5,6 +5,7 @@ import Persons from './components/Persons';
 import Personadd from './components/Personadd';
 import personsService from './services/persons';
 import Notification from './components/Notification';
+import Error from './components/Error';
 
 const App = () => {
   const [filter, setFilter] = useState({
@@ -15,6 +16,7 @@ const App = () => {
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     personsService.getAll().then((initialPersons) => {
@@ -55,8 +57,14 @@ const App = () => {
           }, 5000);
         })
         .catch((error) => {
-          console.log(`Error updating person ${personUpdate.name}`);
-          console.log('error :', error);
+          setErrorMessage(
+            `${personUpdate.name} has been already deleted from phonebook`
+          );
+          setTimeout(() => {
+            setErrorMessage(null);
+          }, 5000);
+          // Filtteröidään poistettu henkilö pois persons-taulukosta asettamalla sovellukselle uusi tila
+          setPersons(persons.filter((p) => p.id != personUpdate.id));
         });
     }
     // Uusi nimi luodaan puhelinluetteloon vain siinä tapauksessa, että lisättävä nimi ei ole jo puhelinluettelossa.
@@ -129,6 +137,7 @@ const App = () => {
     <div>
       <h1>Phonebook</h1>
       <Notification message={successMessage} />
+      <Error message={errorMessage} />
       <Filter filter={filter} handleFilterChange={handleFilterChange} />
       <h2>add a new</h2>
       <Personadd

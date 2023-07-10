@@ -2,7 +2,7 @@
   "persons": [
     {
       "name": "Arto Hellas",
-      "number": "040-1231456",
+      "number": "050-2345897",
       "id": 1
     },
     {
@@ -24,11 +24,6 @@
       "name": "Ismo Laitela",
       "number": "050-456789",
       "id": 5
-    },
-    {
-      "name": "testi1",
-      "number": "",
-      "id": 6
     },
     {
       "name": "Seppo Taalasmaa",
