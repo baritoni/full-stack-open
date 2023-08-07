@@ -117,6 +117,23 @@ test('likes of a blog can be updated', async () => {
   expect(updatedBlog.likes).toEqual(blogsAtEnd[0].likes)
 })
 
+test('invalid username or password is not accepted', async () => {
+  const login = {
+    username: 'to',
+    password: 'lu'
+  }
+  const blogsAtStart = await helper.blogsInDb()
+
+  await api
+    .post('/api/users')
+    .send(login)
+    .expect(403)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtStart).toEqual(blogsAtEnd)
+})
+
 test
 afterAll(async () => {
   await mongoose.connection.close()
