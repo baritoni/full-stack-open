@@ -82,6 +82,41 @@ test('title and url are required', async () => {
   expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
 })
 
+test('a blog can be deleted', async () => {
+  const blogsAtStart = await helper.blogsInDb()
+  const blogToDelete = blogsAtStart[0]
+
+  await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204)
+
+  const blogsAtEnd = await helper.blogsInDb()
+
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1)
+
+  const authors = blogsAtEnd.map((r) => r.author)
+
+  expect(authors).not.toContain(blogToDelete.author)
+})
+
+test('likes of a blog can be updated', async () => {
+  const updatedBlog = {
+    likes: 10
+  }
+
+  const blogsAtStart = await helper.blogsInDb()
+  const idOfUpdated = blogsAtStart[0].id
+  console.log('idOfUpdated', idOfUpdated)
+
+  await api
+    .put(`/api/blogs/${idOfUpdated}`)
+    .send(updatedBlog)
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await helper.blogsInDb()
+
+  expect(updatedBlog.likes).toEqual(blogsAtEnd[0].likes)
+})
+
 test
 afterAll(async () => {
   await mongoose.connection.close()
