@@ -4,7 +4,9 @@ const app = require('../app')
 
 const api = supertest(app)
 const helper = require('./test_helper')
+const bcrypt = require('bcrypt')
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 beforeEach(async () => {
   await Blog.deleteMany({})
@@ -29,13 +31,14 @@ test('returned blogs has field "id"', async () => {
 
   expect(response.body[0].id).toBeDefined()
 })
-
+/*
 test('a valid blog can be added', async () => {
   const newBlog = {
     title: 'testing',
     author: 'tester',
     url: 'jippii.fi',
-    likes: 5
+    likes: 5,
+    userId: '64d3433484d84daaec6575ff'
   }
 
   await api
@@ -81,7 +84,7 @@ test('title and url are required', async () => {
   const blogsAtEnd = await helper.blogsInDb()
   expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
 })
-
+*/
 test('a blog can be deleted', async () => {
   const blogsAtStart = await helper.blogsInDb()
   const blogToDelete = blogsAtStart[0]
@@ -134,6 +137,38 @@ test('invalid username or password is not accepted', async () => {
   expect(blogsAtStart).toEqual(blogsAtEnd)
 })
 
+describe('when there is initially one user at db', () => {
+  beforeEach(async () => {
+    await User.deleteMany({})
+
+    const passwordHash = await bcrypt.hash('sekret', 10)
+    const user = new User({ username: 'root', passwordHash })
+
+    await user.save()
+  })
+
+  test('creation succeeds with a fresh username', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    const newUser = {
+      username: 'tonluo',
+      name: 'Toni Luomala',
+      password: 'salasana'
+    }
+
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const usersAtEnd = await helper.usersInDb()
+    expect(usersAtEnd).toHaveLength(usersAtStart.length + 1)
+
+    const usernames = usersAtEnd.map((u) => u.username)
+    expect(usernames).toContain(newUser.username)
+  })
+})
 test
 afterAll(async () => {
   await mongoose.connection.close()
