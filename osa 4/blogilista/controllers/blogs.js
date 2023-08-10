@@ -24,14 +24,10 @@ blogsRouter.post('/', async (request, response, next) => {
     return response.status(400).json({ error: 'url or title missing' })
   }
 
-  try {
-    const savedBlog = await blog.save()
-    user.notes = user.blogs.concat(savedBlog._id)
-    await user.save()
-    response.status(201).json(savedBlog)
-  } catch (exception) {
-    next(exception)
-  }
+  const savedBlog = await blog.save()
+  response.status(201).json(savedBlog)
+  user.blogs = user.blogs.concat(savedBlog._id)
+  await user.save()
 })
 
 blogsRouter.delete('/:id', async (request, response) => {
