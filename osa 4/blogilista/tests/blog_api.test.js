@@ -31,7 +31,7 @@ test('returned blogs has field "id"', async () => {
 
   expect(response.body[0].id).toBeDefined()
 })
-/*
+
 test('a valid blog can be added', async () => {
   const newBlog = {
     title: 'testing',
@@ -84,7 +84,7 @@ test('title and url are required', async () => {
   const blogsAtEnd = await helper.blogsInDb()
   expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
 })
-*/
+
 test('a blog can be deleted', async () => {
   const blogsAtStart = await helper.blogsInDb()
   const blogToDelete = blogsAtStart[0]
