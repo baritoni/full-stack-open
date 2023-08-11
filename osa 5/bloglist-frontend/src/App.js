@@ -75,11 +75,19 @@ const App = () => {
       </div>
     )
   }
+
+  const logout = () => {
+    window.localStorage.removeItem('loggedBlogappUser')
+    setUser(null)
+  }
   return (
     <div>
       <div>
         <h2>blogs</h2>
-        <p className="logged">{user.name} logged in</p>
+        <p className="logged">
+          {user.name} logged in <button onClick={logout}>logout</button>
+        </p>
+
         {blogs.map((blog) => (
           <Blog key={blog.id} blog={blog} />
         ))}
