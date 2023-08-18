@@ -86,7 +86,7 @@ describe('total likes', () => {
     })
 })
 
-describe('Object with most likes', () => {
+describe('Find max values', () => {
   const blogs = [
     {
       _id: '5a422a851b54a676234d17f7',
@@ -147,5 +147,14 @@ describe('Object with most likes', () => {
       likes: 12,
       __v: 0
     })
+  })
+  test('author with most blogs', () => {
+    const result = listHelper.mostBlogs(blogs)
+    expect(result).toEqual({ author: 'Robert C. Martin', blogs: 3 })
+  })
+
+  test('author with most likes', () => {
+    const result = listHelper.mostLikes(blogs)
+    expect(result).toEqual({ author: 'Edsger W. Dijkstra', likes: 17 })
   })
 })
