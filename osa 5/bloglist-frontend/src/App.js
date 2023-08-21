@@ -1,21 +1,22 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import './styles/app.css'
 import Error from './components/Error'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
+import BlogForm from './components/BlogForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [newTitle, setNewTitle] = useState('testataan1')
-  const [newAuthor, setNewAuthor] = useState('testaaja1')
-  const [newUrl, setNewUrl] = useState('testiblog1.fi')
   const [username, setUsername] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
   const [notificationMessage, setNotificationMessage] = useState(null)
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+
+  const blogFormRef = useRef()
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs))
@@ -55,34 +56,10 @@ const App = () => {
     }
   }
 
-  const handleTitleChange = (event) => {
-    setNewTitle(event.target.value)
-    //console.log('typing on title: ', newTitle)
-  }
-
-  const handleAuthorChange = (event) => {
-    setNewAuthor(event.target.value)
-    //console.log('typing on author: ', newAuthor)
-  }
-
-  const handleUrlChange = (event) => {
-    setNewUrl(event.target.value)
-    //console.log('typing on author: ', newUrl)
-  }
-
-  const addBlog = (event) => {
-    event.preventDefault()
-    const blogObject = {
-      title: newTitle,
-      author: newAuthor,
-      url: newUrl
-    }
-
+  const addBlog = (blogObject) => {
     blogService.create(blogObject).then((returnedBlog) => {
       setBlogs(blogs.concat(returnedBlog))
-      setNewTitle('')
-      setNewAuthor('')
-      setNewUrl('')
+
       setNotificationMessage(
         `a new blog ${blogObject.title} by ${blogObject.author} added`
       )
@@ -126,6 +103,7 @@ const App = () => {
     window.localStorage.removeItem('loggedBlogappUser')
     setUser(null)
   }
+
   return (
     <div>
       <div>
@@ -134,23 +112,10 @@ const App = () => {
         <p className="logged">
           {user.name} logged in <button onClick={logout}>logout</button>
         </p>
-        <div>
-          <h2>create new</h2>
-          <form onSubmit={addBlog}>
-            <div>
-              title:
-              <input value={newTitle} onChange={handleTitleChange}></input>
-            </div>
-            <div>
-              author:
-              <input value={newAuthor} onChange={handleAuthorChange}></input>
-            </div>
-            <div>
-              ulr:<input value={newUrl} onChange={handleUrlChange}></input>
-            </div>
-            <button type="submit">create</button>
-          </form>
-        </div>
+        <Togglable buttonLabel="new blog" ref={blogFormRef}>
+          <BlogForm createBlog={addBlog} />
+        </Togglable>
+
         {blogs.map((blog) => (
           <Blog key={blog.id} blog={blog} />
         ))}
