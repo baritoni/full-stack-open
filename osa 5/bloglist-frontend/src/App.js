@@ -19,7 +19,7 @@ const App = () => {
   const blogFormRef = useRef()
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs))
+    blogService.getAll().then((blogs) => setBlogs(blogs.sort(sortByLikes)))
   }, [])
 
   useEffect(() => {
@@ -86,6 +86,10 @@ const App = () => {
         setErrorMessage(null)
       }, 5000)
     })
+  }
+
+  const sortByLikes = (a, b) => {
+    return a.likes - b.likes
   }
 
   if (user === null) {
