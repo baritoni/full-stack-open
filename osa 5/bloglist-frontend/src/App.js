@@ -27,6 +27,7 @@ const App = () => {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
+      //console.log('user: ', user)
       blogService.setToken(user.token)
       //console.log(user.token)
     }
@@ -92,6 +93,17 @@ const App = () => {
     return a.likes - b.likes
   }
 
+  const deleteBlog = (id) => {
+    blogService
+      .remove(id)
+      .then(() => {
+        setBlogs(blogs.filter((b) => b.id !== id))
+      })
+      .catch((error) => {
+        console.log('Delete failed')
+      })
+  }
+
   if (user === null) {
     return (
       <div>
@@ -144,6 +156,8 @@ const App = () => {
             key={blog.title}
             blog={blog}
             handleLikes={() => handleLikes(blog.id)}
+            deleteBlog={() => deleteBlog(blog.id)}
+            user={user}
           />
         ))}
       </div>
