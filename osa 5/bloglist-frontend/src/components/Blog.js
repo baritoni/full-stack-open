@@ -1,8 +1,8 @@
 import { useState } from 'react'
 
 const Blog = ({ blog, handleLikes, deleteBlog, user }) => {
-  console.log('blog: ', blog)
-  console.log('user: ', user)
+  console.log('blogusername: ', blog.user.username)
+  console.log('username: ', user.username)
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -15,13 +15,6 @@ const Blog = ({ blog, handleLikes, deleteBlog, user }) => {
 
   const [show, toggleShow] = useState(false)
   const [like, setLike] = useState(blog.likes)
-
-  const findUser = () => {
-    const nonono = user.username
-
-    console.log('nonono: ', nonono)
-    return nonono
-  }
 
   const addLike = () => {
     const updateBlog = { ...blog }
@@ -61,39 +54,32 @@ const Blog = ({ blog, handleLikes, deleteBlog, user }) => {
             <p>
               <button onClick={removeSelected}>remove </button>
             </p>
-            <p>
-              <button onClick={findUser}>user </button>
-            </p>
-          </div>
-        )}
-      </div>
-    )
-  } else {
-    return (
-      <div style={blogStyle}>
-        <div>
-          <p>
-            {blog.title}
-            <button onClick={() => toggleShow(!show)}>
-              {show ? 'Hide' : 'View'}
-            </button>
-          </p>
-        </div>
-        {show && blog.url}
-        {show && (
-          <div>
-            <p>
-              likes: {like} <button onClick={addLike}>like</button>
-            </p>
-            {blog.author}
-            <p>
-              <button onClick={findUser}>user </button>
-            </p>
           </div>
         )}
       </div>
     )
   }
+  return (
+    <div style={blogStyle}>
+      <div>
+        <p>
+          {blog.title}
+          <button onClick={() => toggleShow(!show)}>
+            {show ? 'Hide' : 'View'}
+          </button>
+        </p>
+      </div>
+      {show && blog.url}
+      {show && (
+        <div>
+          <p>
+            likes: {like} <button onClick={addLike}>like</button>
+          </p>
+          {blog.author}
+        </div>
+      )}
+    </div>
+  )
 }
 
 export default Blog

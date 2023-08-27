@@ -57,9 +57,10 @@ const App = () => {
     }
   }
 
-  const addBlog = (blogObject) => {
+  const addBlog = async (blogObject) => {
     blogService.create(blogObject).then((returnedBlog) => {
       setBlogs(blogs.concat(returnedBlog))
+      console.log('returnedblog: ', returnedBlog)
 
       setNotificationMessage(
         `a new blog ${blogObject.title} by ${blogObject.author} added`
