@@ -69,6 +69,25 @@ const App = () => {
     })
   }
 
+  const handleLikes = (id) => {
+    console.log('id: ', id)
+    const blog = blogs.find((b) => b.id === id)
+    console.log('blog: ', blog)
+    const updatedBlog = { ...blog, likes: ++blog.likes }
+    console.log('updateBlog: ', updatedBlog)
+
+    blogService.update(id, updatedBlog).then((response) => {
+      setBlogs(blogs.map((blog) => (blog.id !== id ? blog : response)))
+
+      console.log('response: ', response)
+
+      setErrorMessage('Cannot add more likes')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    })
+  }
+
   if (user === null) {
     return (
       <div>
@@ -117,7 +136,11 @@ const App = () => {
         </Togglable>
 
         {blogs.map((blog) => (
-          <Blog key={blog.id} blog={blog} />
+          <Blog
+            key={blog.title}
+            blog={blog}
+            handleLikes={() => handleLikes(blog.id)}
+          />
         ))}
       </div>
     </div>
