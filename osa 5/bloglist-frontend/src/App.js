@@ -57,9 +57,9 @@ const App = () => {
     }
   }
 
-  const addBlog = async (blogObject) => {
+  const addBlog = (blogObject) => {
     blogService.create(blogObject).then((returnedBlog) => {
-      setBlogs(blogs.concat(returnedBlog))
+      setBlogs(blogs.concat({ ...returnedBlog, user }))
       console.log('returnedblog: ', returnedBlog)
 
       setNotificationMessage(

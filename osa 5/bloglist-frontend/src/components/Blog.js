@@ -1,8 +1,8 @@
 import { useState } from 'react'
 
 const Blog = ({ blog, handleLikes, deleteBlog, user }) => {
-  console.log('blogusername: ', blog.user.username)
-  console.log('username: ', user.username)
+  console.log('bloguser: ', blog)
+  console.log('user: ', user)
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -15,6 +15,7 @@ const Blog = ({ blog, handleLikes, deleteBlog, user }) => {
 
   const [show, toggleShow] = useState(false)
   const [like, setLike] = useState(blog.likes)
+  const [showRemove, setShowRemove] = useState(false)
 
   const addLike = () => {
     const updateBlog = { ...blog }
@@ -26,6 +27,11 @@ const Blog = ({ blog, handleLikes, deleteBlog, user }) => {
     setLike(like + 1)
   }
 
+  const handleShow = () => {
+    toggleShow(!show)
+    if (user.username === blog.user.username) setShowRemove(!showRemove)
+  }
+
   const removeSelected = () => {
     const remove = { ...blog }
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
@@ -33,40 +39,12 @@ const Blog = ({ blog, handleLikes, deleteBlog, user }) => {
     }
   }
 
-  if (user.username === blog.user.username) {
-    return (
-      <div style={blogStyle}>
-        <div>
-          <p>
-            {blog.title}
-            <button onClick={() => toggleShow(!show)}>
-              {show ? 'Hide' : 'View'}
-            </button>
-          </p>
-        </div>
-        {show && blog.url}
-        {show && (
-          <div>
-            <p>
-              likes: {like} <button onClick={addLike}>like</button>
-            </p>
-            {blog.author}
-            <p>
-              <button onClick={removeSelected}>remove </button>
-            </p>
-          </div>
-        )}
-      </div>
-    )
-  }
   return (
     <div style={blogStyle}>
       <div>
         <p>
           {blog.title}
-          <button onClick={() => toggleShow(!show)}>
-            {show ? 'Hide' : 'View'}
-          </button>
+          <button onClick={handleShow}>{show ? 'Hide' : 'View'}</button>
         </p>
       </div>
       {show && blog.url}
@@ -77,6 +55,12 @@ const Blog = ({ blog, handleLikes, deleteBlog, user }) => {
           </p>
           {blog.author}
         </div>
+      )}
+
+      {showRemove && (
+        <p>
+          <button onClick={removeSelected}>remove </button>
+        </p>
       )}
     </div>
   )
