@@ -37,10 +37,10 @@ describe('testing render of blog object', () => {
   })
 
   test('renders url, likes and user when view button is clicked', async () => {
-    const { container } = render(<Blog blog={blog} user={'tonluo'} />)
+    const { container } = render(<Blog blog={blog} user={''} />)
 
     const user = userEvent.setup()
-    const button = screen.getByText('View')
+    const button = screen.getByText('view')
 
     await user.click(button)
 
@@ -52,5 +52,20 @@ describe('testing render of blog object', () => {
 
     const div = container.querySelector('.showUser')
     expect(div).toHaveTextContent('tester')
+  })
+  test.only('when like button is clicked twice, eventhandler function gets called twice', async () => {
+    const mockHandler = jest.fn()
+
+    render(<Blog blog={blog} user={'tonluo'} handleLikes={mockHandler} />)
+
+    const user = userEvent.setup()
+
+    const viewButton = screen.getByText('view')
+    await user.click(viewButton)
+
+    const likeButton = screen.getByText('like')
+    await user.dblClick(likeButton)
+
+    expect(mockHandler.mock.calls).toHaveLength(2)
   })
 })

@@ -45,7 +45,7 @@ const Blog = ({ blog, handleLikes, deleteBlog, user }) => {
       <div>
         <p>
           {blog.title}
-          <button onClick={handleShow}>{show ? 'Hide' : 'View'}</button>
+          <button onClick={handleShow}>{show ? 'hide' : 'view'}</button>
         </p>
       </div>
       {show && blog.url}
