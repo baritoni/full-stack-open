@@ -1,8 +1,8 @@
 import { useState } from 'react'
 
 const Blog = ({ blog, handleLikes, deleteBlog, user }) => {
-  console.log('bloguser: ', blog)
-  console.log('user: ', user)
+  console.log('blogusername: ', blog.user.name)
+  //console.log('user: ', user)
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -29,6 +29,7 @@ const Blog = ({ blog, handleLikes, deleteBlog, user }) => {
 
   const handleShow = () => {
     toggleShow(!show)
+
     if (user.username === blog.user.username) setShowRemove(!showRemove)
   }
 
@@ -53,10 +54,9 @@ const Blog = ({ blog, handleLikes, deleteBlog, user }) => {
           <p>
             likes: {like} <button onClick={addLike}>like</button>
           </p>
-          {blog.author}
         </div>
       )}
-
+      {blog.user.name}
       {showRemove && (
         <p>
           <button onClick={removeSelected}>remove </button>

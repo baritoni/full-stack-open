@@ -72,16 +72,15 @@ const App = () => {
   }
 
   const handleLikes = (id) => {
-    console.log('id: ', id)
+    //console.log('id: ', id)
     const blog = blogs.find((b) => b.id === id)
-    console.log('blog: ', blog)
+    //console.log('blog: ', blog)
     const updatedBlog = { ...blog, likes: ++blog.likes }
-    console.log('updateBlog: ', updatedBlog)
+    //console.log('updateBlog: ', updatedBlog)
 
     blogService.update(id, updatedBlog).then((response) => {
-      setBlogs(blogs.map((blog) => (blog.id !== id ? blog : response)))
-
       console.log('response: ', response)
+      setBlogs(blogs.map((blog) => (blog.id !== id ? blog : response)))
 
       setErrorMessage('Cannot add more likes')
       setTimeout(() => {
