@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 const Blog = ({ blog, handleLikes, deleteBlog, user }) => {
-  console.log('blogusername: ', blog.user.name)
+  //console.log('blogusername: ', blog.user.name)
   //console.log('user: ', user)
   const blogStyle = {
     paddingTop: 10,
@@ -50,13 +50,14 @@ const Blog = ({ blog, handleLikes, deleteBlog, user }) => {
       </div>
       {show && blog.url}
       {show && (
-        <div>
+        <div className="toggleview">
           <p>
             likes: {like} <button onClick={addLike}>like</button>
           </p>
+          <p className="showUser">{blog.user.name}</p>
         </div>
       )}
-      {blog.user.name}
+
       {showRemove && (
         <p>
           <button onClick={removeSelected}>remove </button>

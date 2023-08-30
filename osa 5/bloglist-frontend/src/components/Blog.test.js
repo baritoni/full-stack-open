@@ -9,7 +9,8 @@ describe('testing render of blog object', () => {
     title: 'Testing react',
     author: 'Ada Lovelace',
     url: 'http://www.react-testing.com',
-    likes: 0
+    likes: 0,
+    user: { username: 'testuser', name: 'tester' }
   }
 
   test('renders title by default', () => {
@@ -36,7 +37,7 @@ describe('testing render of blog object', () => {
   })
 
   test('renders url, likes and user when view button is clicked', async () => {
-    render(<Blog blog={blog} username={'tonluo'} />)
+    const { container } = render(<Blog blog={blog} user={'tonluo'} />)
 
     const user = userEvent.setup()
     const button = screen.getByText('View')
@@ -48,5 +49,8 @@ describe('testing render of blog object', () => {
 
     const likesElement = screen.getByText('likes: 0')
     expect(likesElement).toBeDefined()
+
+    const div = container.querySelector('.showUser')
+    expect(div).toHaveTextContent('tester')
   })
 })
