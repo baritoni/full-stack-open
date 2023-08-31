@@ -2,6 +2,7 @@ import React from 'react'
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
 import Blog from './Blog'
+import BlogForm from './BlogForm'
 import userEvent from '@testing-library/user-event'
 
 describe('testing render of blog object', () => {
@@ -53,7 +54,7 @@ describe('testing render of blog object', () => {
     const div = container.querySelector('.showUser')
     expect(div).toHaveTextContent('tester')
   })
-  test.only('when like button is clicked twice, eventhandler function gets called twice', async () => {
+  test('when like button is clicked twice, eventhandler function gets called twice', async () => {
     const mockHandler = jest.fn()
 
     render(<Blog blog={blog} user={'tonluo'} handleLikes={mockHandler} />)
@@ -67,5 +68,29 @@ describe('testing render of blog object', () => {
     await user.dblClick(likeButton)
 
     expect(mockHandler.mock.calls).toHaveLength(2)
+  })
+})
+describe('testing blogform component', () => {
+  test.only('callback function gets called with right properties when blog is added', async () => {
+    const user = userEvent.setup()
+    const createBlog = jest.fn()
+
+    render(<BlogForm createBlog={createBlog} />)
+
+    const inputs = screen.getAllByRole('textbox')
+
+    const sendButton = screen.getByText('create')
+
+    await user.type(inputs[0], 'Testing React...')
+    await user.type(inputs[1], 'Ada Lovelace')
+    await user.type(inputs[2], 'http://www.react-testing.com')
+    await user.click(sendButton)
+
+    expect(createBlog.mock.calls).toHaveLength(1)
+    expect(createBlog.mock.calls[0][0].title).toBe(
+      'Testing React...',
+      'Ada LoveLace',
+      'http://www.react-testing.com'
+    )
   })
 })
