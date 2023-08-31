@@ -106,7 +106,7 @@ const App = () => {
 
   if (user === null) {
     return (
-      <div>
+      <div className="Login">
         <h2>Log in to application</h2>
         <Error errorMessage={errorMessage} />
         <form onSubmit={handleLogin}>
