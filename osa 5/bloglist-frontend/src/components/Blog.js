@@ -41,7 +41,7 @@ const Blog = ({ blog, handleLikes, deleteBlog, user }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div className="blog" style={blogStyle}>
       <div>
         <p>
           {blog.title}
@@ -57,12 +57,13 @@ const Blog = ({ blog, handleLikes, deleteBlog, user }) => {
           <p className="showUser">{blog.user.name}</p>
         </div>
       )}
-
-      {showRemove && (
-        <p>
-          <button onClick={removeSelected}>remove </button>
-        </p>
-      )}
+      <div className="remove">
+        {showRemove && (
+          <p>
+            <button onClick={removeSelected}>remove </button>
+          </p>
+        )}
+      </div>
     </div>
   )
 }

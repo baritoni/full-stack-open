@@ -80,7 +80,11 @@ const App = () => {
 
     blogService.update(id, updatedBlog).then((response) => {
       console.log('response: ', response)
-      setBlogs(blogs.map((blog) => (blog.id !== id ? blog : response)))
+      setBlogs(
+        blogs
+          .sort(sortByLikes)
+          .map((blog) => (blog.id !== id ? blog : response))
+      )
 
       setErrorMessage('Cannot add more likes')
       setTimeout(() => {
@@ -90,7 +94,7 @@ const App = () => {
   }
 
   const sortByLikes = (a, b) => {
-    return a.likes - b.likes
+    return a.likes > b.likes ? -1 : 0
   }
 
   const deleteBlog = (id) => {
@@ -114,6 +118,7 @@ const App = () => {
             username
             <input
               type="text"
+              id="username"
               value={username}
               name="Username"
               onChange={({ target }) => setUsername(target.value)}
@@ -123,6 +128,7 @@ const App = () => {
             password
             <input
               type="password"
+              id="password"
               value={password}
               name="Password"
               onChange={({ target }) => setPassword(target.value)}
