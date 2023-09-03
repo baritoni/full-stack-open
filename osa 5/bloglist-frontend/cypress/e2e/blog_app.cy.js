@@ -40,11 +40,10 @@ describe('Blog app', function () {
 
   describe('When logged in', function () {
     beforeEach(function () {
-      cy.get('#username').type('tonluo')
-      cy.get('#password').type('salasana')
-      cy.get('button').click()
-
-      cy.contains('Toni Luomala logged in')
+      cy.login({
+        username: 'tonluo',
+        password: 'salasana'
+      })
     })
 
     it('A blog can be created', function () {
@@ -60,14 +59,11 @@ describe('Blog app', function () {
 
     describe('Blog handling', function () {
       beforeEach(function () {
-        cy.contains('create new blog').click()
-        cy.get('#title').type('testing with cypress')
-        cy.get('#author').type('tester')
-        cy.get('#url').type('www.cypresstestingblog.com')
-        cy.get('#createButton').click()
-        cy.get('.notification').contains(
-          'a new blog testing with cypress by tester added'
-        )
+        cy.createBlog({
+          title: 'testing with cypress',
+          author: 'tester',
+          url: 'www.cypresstestingblog.com'
+        })
       })
 
       it('A blog can be liked', function () {
@@ -84,31 +80,30 @@ describe('Blog app', function () {
       it('A blog can be deleted only by created user', function () {
         cy.contains('logout').click()
 
-        cy.get('#username').type('testaaja')
-        cy.get('#password').type('salasana')
-        cy.get('button').click()
+        cy.login({ username: 'testaaja', password: 'salasana' })
 
         cy.contains('view').click()
+
+        // Oletetaan että remove -painike ei ole näkyvillä, koska kirjautunut käyttäjä on eri kuin blogin luoja.
         cy.get('.remove').should('not.be.visible')
       })
       it.only('Blogs are ordered by descending likes', function () {
         cy.contains('view').click()
         cy.contains('like').click()
 
-        cy.get('#title').type('testing order of blogs')
-        cy.get('#author').type('testing')
-        cy.get('#url').type('www.likestestingblog.com')
-        cy.get('#createButton').click()
-        cy.get('.notification').contains(
-          'a new blog testing with cypress by tester added'
-        )
+        cy.createBlog({
+          title: 'testing order of blogs',
+          author: 'testing',
+          url: 'www.likestestingblog.com'
+        })
 
-        cy.contains('view')
-          .click()
-          .invoke('addClass', 'The title with most likes')
+        cy.get('.blog').eq(1).contains('view').click()
         cy.get('.blog').eq(1).contains('likes: 0').find('button').click()
         cy.get('.blog').eq(1).contains('likes: 1').find('button').click()
 
+        cy.get('.blog').eq(1).contains('view').click()
+
+        // Tarkistetaan että ensimmäisenä renderöityvässä blogissa on enemmän likeja kuin seuraavassa
         cy.get('.blog').eq(0).contains('likes: 2')
         cy.get('.blog').eq(1).contains('likes: 1')
       })

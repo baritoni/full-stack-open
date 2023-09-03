@@ -80,6 +80,7 @@ const App = () => {
 
     blogService.update(id, updatedBlog).then((response) => {
       console.log('response: ', response)
+      // Tilan muuttuessa blogit järjestetään likejen mukaiseen järjestykseen. Tämä on toteutettu vain cypress testin helpottamiseksi.
       setBlogs(
         blogs
           .sort(sortByLikes)
