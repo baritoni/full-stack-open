@@ -1,5 +1,6 @@
-//import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
+/*
 const filterReducer = (state = '', action) => {
   console.log('ACTION: ', action)
   switch (action.type) {
@@ -16,7 +17,7 @@ export const filterChange = (filter) => {
     payload: filter
   }
 }
-/*
+*/
 const filterSlice = createSlice({
   name: 'filter',
   initialState: '',
@@ -29,6 +30,3 @@ const filterSlice = createSlice({
 
 export const { filterChange } = filterSlice.actions
 export default filterSlice.reducer
-*/
-
-export default filterReducer
