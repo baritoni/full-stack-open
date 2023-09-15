@@ -4,7 +4,7 @@ import notificationReducer from './reducers/notificationReducer'
 import anecdoteService from './services/anecdotes'
 import anecdoteReducer, { setAnecdotes } from './reducers/anecdoteReducer'
 
-export const store = configureStore({
+const store = configureStore({
   reducer: {
     anecdotes: anecdoteReducer,
     filter: filterReducer,
