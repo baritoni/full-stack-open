@@ -51,6 +51,15 @@ export const createAnecdote = (content) => {
   }
 }
 
+export const updateAnecdote = (anecdote) => {
+  //console.log('anecdote: ', anecdote)
+  const voteAnecdote = { ...anecdote, votes: anecdote.votes + 1 }
+  return async (dispatch) => {
+    await anecdoteService.updateAnecdote(anecdote.id, voteAnecdote)
+    dispatch(voteSelected(anecdote.id))
+  }
+}
+
 export const {
   voteSelected,
   toggleImportanceOf,
